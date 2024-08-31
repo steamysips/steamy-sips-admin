@@ -1,10 +1,6 @@
 import "@mantine/core/styles.css";
 import Head from "next/head";
-import {
-  MantineProvider,
-  AppShell,
-  Burger,
-} from "@mantine/core";
+import { MantineProvider, AppShell, Burger } from "@mantine/core";
 import { theme } from "../theme";
 import { NavbarNested } from "../components/NavbarNested";
 import { useDisclosure } from "@mantine/hooks";
@@ -26,6 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
       router.push("/");
     }
   }, [loggedIn, router]);
+
+  function updateLoginStatus(newStatus: boolean) {
+    setLoggedIn(newStatus);
+    console.log("status changed to " + loggedIn);
+  }
 
   function getMainLayout() {
     return (
@@ -66,7 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Steamy Sips Admin</title>
       </Head>
       {router.pathname == "/" ? (
-        <Component {...pageProps} />
+        <Component {...pageProps} updateLoginStatus={updateLoginStatus} />
       ) : (
         getMainLayout()
       )}
