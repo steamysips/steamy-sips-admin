@@ -1,12 +1,13 @@
 import { Group, Title, ScrollArea, rem } from "@mantine/core";
 import {
-  IconNotes,
-  IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
-  IconFileAnalytics,
   IconAdjustments,
-  IconLock,
+  IconBuildingStore,
+  IconShoppingCartFilled,
+  IconCup,
+  IconMessage,
+  IconUsers,
 } from "@tabler/icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
@@ -14,33 +15,66 @@ import { Logo } from "./Logo";
 import classes from "../styles/NavbarNested.module.css";
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
   {
-    label: "Market news",
-    icon: IconNotes,
+    label: "Dashboard",
+    icon: IconGauge,
     initiallyOpened: true,
+    link: "/dashboard",
     links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
+      { label: "Sales Overview", link: "/dashboard/sales-overview" },
+      { label: "Customer Insights", link: "/dashboard/customer-insights" },
+      { label: "Performance Metrics", link: "/dashboard/performance-metrics" },
     ],
   },
   {
-    label: "Releases",
-    icon: IconCalendarStats,
+    label: "Orders",
+    icon: IconShoppingCartFilled,
     links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
+      { label: "Pending Orders", link: "/orders/pending" },
+      { label: "Completed Orders", link: "/orders/completed" },
+      { label: "Refund Requests", link: "/orders/refunds" },
+    ],
+  },
+  {
+    label: "Products",
+    icon: IconCup,
+    links: [
+      { label: "All Products", link: "/products/all" },
+      { label: "Categories", link: "/products/categories" },
+      { label: "Add New Product", link: "/products/new" },
+      { label: "Inventory Management", link: "/products/inventory" },
+    ],
+  },
+  {
+    label: "Reviews",
+    icon: IconMessage,
+    links: [
+      { label: "Customer Reviews", link: "/reviews/customers" },
+      { label: "Response Templates", link: "/reviews/templates" },
+      { label: "Review Analytics", link: "/reviews/analytics" },
+    ],
+  },
+  {
+    label: "Staff",
+    icon: IconUsers,
+    links: [
+      { label: "All Staff", link: "/staff/all" },
+      { label: "Roles & Permissions", link: "/staff/roles" },
+    ],
+  },
+  {
+    label: "Stores",
+    icon: IconBuildingStore,
+    links: [
+      { label: "All Locations", link: "/stores/all" },
+      { label: "Add New Store", link: "/stores/new" },
+      { label: "Store Settings", link: "/stores/settings" },
     ],
   },
   { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
   {
-    label: "Security",
-    icon: IconLock,
+    label: "Settings",
+    icon: IconAdjustments,
     links: [
       { label: "Enable 2FA", link: "/" },
       { label: "Change password", link: "/" },
