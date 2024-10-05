@@ -10,7 +10,7 @@ import classes from "../styles/NotFound.module.css";
 import Link from "next/link";
 
 export default function NotFoundImage() {
-  const imgSrc = "./images/404.svg";
+  const imgSrc = "/images/404.svg";
 
   return (
     <Container className={classes.root}>

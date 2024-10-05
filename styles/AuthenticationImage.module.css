@@ -1,7 +1,7 @@
 .wrapper {
   min-height: rem(500px);
   background-size: cover;
-  background-image: url(https://mountaincity.com/images/coffee_rules.jpg);
+  background-image: url(/images/coffee_rules.jpg);
 }
 
 .form {
