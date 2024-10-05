@@ -17,15 +17,31 @@ export default function App({ Component, pageProps }: AppProps) {
   const [loggedIn, setLoggedIn] = useState(false);
   const router = useRouter();
 
+  // if user is not logged in redirect to login page
   useEffect(() => {
-    if (!loggedIn) {
-      router.push("/");
-    }
+    if (loggedIn) return;
+
+    // if user is currently on 404 page, ignore
+    if (router.pathname == "/404") return;
+
+    // else redirect user to login page
+    router.push("/");
   }, [loggedIn, router]);
 
-  function updateLoginStatus(newStatus: boolean) {
-    setLoggedIn(newStatus);
-    console.log("status changed to " + loggedIn);
+  /**
+   * Call this functions when login is successful
+   */
+  function handleLogIn() {
+    setLoggedIn(true);
+    router.push("/dashboard/sales-overview");
+  }
+
+  /**
+   * Call this function to logout
+   */
+  function handleLogOut() {
+    setLoggedIn(false);
+    router.push("/");
   }
 
   function getMainLayout() {
@@ -41,7 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         <AppShell.Navbar>
-          <NavbarNested />
+          <NavbarNested handleLogOut={handleLogOut} />
         </AppShell.Navbar>
 
         <AppShell.Main>
@@ -50,6 +66,8 @@ export default function App({ Component, pageProps }: AppProps) {
       </AppShell>
     );
   }
+
+  const onLoginPage = router.pathname === "/";
   return (
     <MantineProvider theme={theme}>
       <Head>
@@ -66,8 +84,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="robots" content="noindex, nofollow, noarchive" />
         <title>Steamy Sips Admin</title>
       </Head>
-      {router.pathname == "/" ? (
-        <Component {...pageProps} updateLoginStatus={updateLoginStatus} />
+      {onLoginPage ? (
+        <Component {...pageProps} handleLogIn={handleLogIn} />
       ) : (
         getMainLayout()
       )}

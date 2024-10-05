@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import classes from "../styles/NavbarLinksGroup.module.css";
+import Link from "next/link";
 
 interface LinksGroupProps {
   readonly icon: React.FC<any>;
@@ -27,8 +28,8 @@ export function LinksGroup({
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
+    <Text
+      component={Link}
       className={classes.link}
       href={link.link}
       key={link.label}

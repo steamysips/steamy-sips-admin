@@ -1,7 +1,6 @@
 import { Paper, TextInput, PasswordInput, Button, Title } from "@mantine/core";
 import classes from "../styles/AuthenticationImage.module.css";
 import { useForm } from "@mantine/form";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface formData {
@@ -10,11 +9,10 @@ interface formData {
 }
 
 interface pageProps {
-  updateLoginStatus: (loggedIn: boolean) => void;
+  handleLogIn: () => void;
 }
 
-export default function LoginPage({ updateLoginStatus }: pageProps) {
-  const router = useRouter();
+export default function LoginPage({ handleLogIn }: pageProps) {
   const [loading, setLoading] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
@@ -43,8 +41,7 @@ export default function LoginPage({ updateLoginStatus }: pageProps) {
         }
       );
       if (response.ok) {
-        updateLoginStatus(true);
-        router.push("/dashboard/sales-overview");
+        handleLogIn();
       } else {
         window.alert("Invalid credentials");
         form.reset();

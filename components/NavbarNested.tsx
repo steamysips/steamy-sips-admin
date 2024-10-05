@@ -1,4 +1,10 @@
-import { Group, Title, ScrollArea, rem } from "@mantine/core";
+import {
+  Group,
+  Title,
+  ScrollArea,
+  rem,
+  UnstyledButton,
+} from "@mantine/core";
 import {
   IconGauge,
   IconPresentationAnalytics,
@@ -7,6 +13,7 @@ import {
   IconShoppingCartFilled,
   IconCup,
   IconMessage,
+  IconLogout,
   IconUsers,
 } from "@tabler/icons-react";
 import { UserButton } from "./UserButton";
@@ -83,7 +90,11 @@ const mockdata = [
   },
 ];
 
-export function NavbarNested() {
+interface NavBarProps {
+  readonly handleLogOut: () => void;
+}
+
+export function NavbarNested({ handleLogOut }: NavBarProps) {
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
@@ -102,6 +113,10 @@ export function NavbarNested() {
         </ScrollArea>
         <div className={classes.footer}>
           <UserButton />
+          <UnstyledButton onClick={handleLogOut} className={classes.link}>
+            <IconLogout className={classes.linkIcon} stroke={1.5} />
+            <span>Logout</span>
+          </UnstyledButton>
         </div>
       </nav>
     </ScrollArea>
