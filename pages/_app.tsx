@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css";
-import '@mantine/charts/styles.css';
+import "@mantine/charts/styles.css";
 import Head from "next/head";
 import { MantineProvider, AppShell, Burger } from "@mantine/core";
 import { theme } from "../theme";
@@ -7,11 +7,13 @@ import { NavbarNested } from "../components/NavbarNested";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface AppProps {
   Component: () => JSX.Element;
   pageProps: any;
 }
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const [opened, { toggle }] = useDisclosure();
@@ -47,24 +49,26 @@ export default function App({ Component, pageProps }: AppProps) {
 
   function getMainLayout() {
     return (
-      <AppShell
-        // header={{ height: 60 }}
-        navbar={{
-          width: 300,
-          breakpoint: "sm",
-          collapsed: { mobile: !opened },
-        }}
-        padding="md"
-      >
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <AppShell.Navbar>
-          <NavbarNested handleLogOut={handleLogOut} />
-        </AppShell.Navbar>
+      <QueryClientProvider client={queryClient}>
+        <AppShell
+          // header={{ height: 60 }}
+          navbar={{
+            width: 300,
+            breakpoint: "sm",
+            collapsed: { mobile: !opened },
+          }}
+          padding="md"
+        >
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <AppShell.Navbar>
+            <NavbarNested handleLogOut={handleLogOut} />
+          </AppShell.Navbar>
 
-        <AppShell.Main>
-          <Component {...pageProps} />
-        </AppShell.Main>
-      </AppShell>
+          <AppShell.Main>
+            <Component {...pageProps} />
+          </AppShell.Main>
+        </AppShell>
+      </QueryClientProvider>
     );
   }
 
