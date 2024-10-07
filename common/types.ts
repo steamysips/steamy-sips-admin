@@ -13,3 +13,12 @@ export interface Product {
     timezone: string;
   };
 }
+
+export interface Store {
+  store_id: number;
+  phone_no: string;
+  latitude: number;
+  longitude: number;
+  street: string;
+  city: string;
+}
