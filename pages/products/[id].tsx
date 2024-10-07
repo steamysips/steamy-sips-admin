@@ -11,6 +11,7 @@ import {
   Stack,
   Anchor,
   ActionIcon,
+  Image,
 } from "@mantine/core";
 import { IconPencil, IconInfoCircle } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
@@ -37,7 +38,7 @@ export default function DisplayProduct() {
   const productId = Number(router.query.id);
   const { isPending, error, data } = useProduct(productId);
 
-  if (isPending) return <LoadingOverlay visible={true} />;
+  if (isPending || !productId) return <LoadingOverlay visible={true} />;
   if (error)
     return (
       <Alert
@@ -65,9 +66,15 @@ export default function DisplayProduct() {
           <IconPencil style={{ width: "90%", height: "90%" }} stroke={1.5} />
         </ActionIcon>
       </Group>
+      <Image
+        w="200"
+        radius="md"
+        src={`${process.env.NEXT_PUBLIC_STEAMY_IMG_URL}/${data.img_url}`}
+        alt={data.img_alt_text}
+      />
       <Text size="md">{data.description}</Text>
       <Title order={2}>Data Sheet</Title>
-      <Table>
+      <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
         <Table.Tbody>
           <Table.Tr>
             <Table.Th>Name</Table.Th>

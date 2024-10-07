@@ -27,4 +27,5 @@ Create a `.env.local` file in the root directory with the following contents:
 NEXT_PUBLIC_DEMO_EMAIL=""
 NEXT_PUBLIC_DEMO_PASSWORD=""
 NEXT_PUBLIC_API_BASE_URL = "http://steamy.localhost/api/v1"
+NEXT_PUBLIC_STEAMY_IMG_URL = "http://steamy.localhost/assets/img/product"
 ```
