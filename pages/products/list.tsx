@@ -26,6 +26,7 @@ import { Product } from "../../common/types";
 import useProducts from "../../hooks/useProducts";
 import { useState } from "react";
 import classes from "../../styles/TableSort.module.css";
+import Link from "next/link";
 
 /**
  * Criteria used for sorting and filtering
@@ -130,7 +131,12 @@ export default function ListProducts() {
         <Table.Td>{product.price}</Table.Td>
         <Table.Td>
           <Group grow>
-            <ActionIcon variant="filled" aria-label="View product">
+            <ActionIcon
+              component={Link}
+              href={`/products/${product.product_id}`}
+              variant="light"
+              aria-label="View product"
+            >
               <IconInfoCircle
                 style={{ width: "70%", height: "70%" }}
                 stroke={1.5}
