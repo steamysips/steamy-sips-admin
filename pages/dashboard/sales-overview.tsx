@@ -61,7 +61,10 @@ export default function SalesOverviewPage() {
     <Stack gap="md">
       <StatsGrid></StatsGrid>
       <Group grow>
-        <Card>
+        <Stack>
+          <Text size="md" fw={500}>
+            Total orders{" "}
+          </Text>
           <AreaChart
             h={300}
             data={ordersQuery.data}
@@ -69,7 +72,7 @@ export default function SalesOverviewPage() {
             series={[{ name: "totalOrders", color: "indigo.6" }]}
             curveType="linear"
           />
-        </Card>
+        </Stack>
         <Stack h={300} align="stretch" justify="center" gap="md">
           <Text size="md" fw={500}>
             Latest Reviews
@@ -77,16 +80,18 @@ export default function SalesOverviewPage() {
           {comments}
         </Stack>
       </Group>
-      <Text size="md" fw={500}>
-        Sales per category{" "}
-      </Text>
-      <BarChart
-        mt={30}
-        h={200}
-        data={salesCategoryQuery.data}
-        dataKey="category"
-        series={[{ name: "unitsSold" }]}
-      />
+      <div>
+        <Text size="md" fw={500}>
+          Sales per category{" "}
+        </Text>
+        <BarChart
+          mt={30}
+          h={200}
+          data={salesCategoryQuery.data}
+          dataKey="category"
+          series={[{ name: "unitsSold", color: "teal.6" }]}
+        />
+      </div>
     </Stack>
   );
 }
