@@ -16,30 +16,31 @@ import {
 import { IconPencil, IconInfoCircle } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Store } from "../../common/types";
+import { useQuery } from "@tanstack/react-query";
 
 const StoreMap = dynamic(() => import("../../components/StoreMap"), {
   ssr: false,
 });
 
-const stores: Store[] = [
-  {
-    store_id: 1,
-    phone_no: "54353",
-    latitude: -20.3484,
-    longitude: 57.5522,
-    street: "Shitty Street",
-    city: "Rose-Hill",
-  },
-];
-
 export default function DisplayProduct() {
   const router = useRouter();
   const productId = Number(router.query.id);
-  const { isPending, error, data } = useProduct(productId);
+  const productQuery = useProduct(productId);
 
-  if (isPending || !productId) return <LoadingOverlay visible={true} />;
-  if (error)
+  const storeQuery = useQuery({
+    queryKey: ["products/", productId, "stores"],
+    queryFn: () =>
+      productId
+        ? fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${productId}/stores`
+          ).then((res) => res.json())
+        : null,
+  });
+
+  if (productQuery.isPending || storeQuery.isPending || !productId)
+    return <LoadingOverlay visible={true} />;
+
+  if (productQuery.error)
     return (
       <Alert
         variant="danger"
@@ -48,10 +49,10 @@ export default function DisplayProduct() {
       ></Alert>
     );
 
-  const items = [
+  const navigationLinks = [
     { title: "Products", href: "/products/list" },
-    { title: data.name, href: "/products/" + productId },
-  ].map((item, index) => (
+    { title: productQuery.data.name, href: "/products/" + productId },
+  ].map((item) => (
     <Anchor component={Link} href={item.href} key={item.href}>
       {item.title}
     </Anchor>
@@ -59,9 +60,9 @@ export default function DisplayProduct() {
 
   return (
     <Stack>
-      <Breadcrumbs>{items}</Breadcrumbs>
+      <Breadcrumbs>{navigationLinks}</Breadcrumbs>
       <Group>
-        <Title order={1}>{data.name}</Title>
+        <Title order={1}>{productQuery.data.name}</Title>
         <ActionIcon variant="outline" aria-label="Edit product">
           <IconPencil style={{ width: "90%", height: "90%" }} stroke={1.5} />
         </ActionIcon>
@@ -69,39 +70,41 @@ export default function DisplayProduct() {
       <Image
         w="200"
         radius="md"
-        src={`${process.env.NEXT_PUBLIC_STEAMY_IMG_URL}/${data.img_url}`}
-        alt={data.img_alt_text}
+        src={`${process.env.NEXT_PUBLIC_STEAMY_IMG_URL}/${productQuery.data.img_url}`}
+        alt={productQuery.data.img_alt_text}
       />
-      <Text size="md">{data.description}</Text>
+      <Text size="md">{productQuery.data.description}</Text>
       <Title order={2}>Data Sheet</Title>
       <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
         <Table.Tbody>
           <Table.Tr>
             <Table.Th>Name</Table.Th>
-            <Table.Td>{data.name}</Table.Td>
+            <Table.Td>{productQuery.data.name}</Table.Td>
           </Table.Tr>
           <Table.Tr>
             <Table.Th>Price (Rs)</Table.Th>
-            <Table.Td>{data.price}</Table.Td>
+            <Table.Td>{productQuery.data.price}</Table.Td>
           </Table.Tr>
           <Table.Tr>
             <Table.Th>Calories (kCal)</Table.Th>
-            <Table.Td>{data.calories}</Table.Td>
+            <Table.Td>{productQuery.data.calories}</Table.Td>
           </Table.Tr>
           <Table.Tr>
             <Table.Th>Category</Table.Th>
-            <Table.Td>{data.category}</Table.Td>
+            <Table.Td>{productQuery.data.category}</Table.Td>
           </Table.Tr>
           <Table.Tr>
             <Table.Th>Date of creation</Table.Th>
             <Table.Td>
-              {data.created_date ? data.created_date.date : "Not set"}
+              {productQuery.data.created_date
+                ? productQuery.data.created_date.date
+                : "Not set"}
             </Table.Td>
           </Table.Tr>
         </Table.Tbody>
       </Table>
-      <Title order={2}>Stores</Title>
-      <StoreMap stores={stores} />
+      <Title order={2}>Stores ({storeQuery.data.length})</Title>
+      <StoreMap stores={storeQuery.data} />
     </Stack>
   );
 }
