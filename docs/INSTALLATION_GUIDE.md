@@ -4,7 +4,7 @@
 ## Prerequisites
 
 - Git
-- Steamy Sips already setup
+- [Steamy Sips API](https://github.com/steamysips/steamy-sips) must up and running
 
 ## Instructions
 
