@@ -52,7 +52,7 @@ export default function DisplayProduct() {
     { title: "Products", href: "/products/list" },
     { title: data.name, href: "/products/" + productId },
   ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={index}>
+    <Anchor component={Link} href={item.href} key={item.href}>
       {item.title}
     </Anchor>
   ));

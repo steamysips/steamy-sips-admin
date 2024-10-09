@@ -10,8 +10,8 @@ import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface AppProps {
-  Component: () => JSX.Element;
-  pageProps: any;
+  readonly Component: () => JSX.Element;
+  readonly pageProps: any;
 }
 const queryClient = new QueryClient();
 

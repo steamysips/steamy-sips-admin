@@ -8,7 +8,7 @@ const STORE_ICON = icon({
   iconSize: [32, 32],
 });
 
-export default function StoreMap({ stores }: { stores: Store[] }) {
+export default function StoreMap({ stores }: { readonly stores: Store[] }) {
   const markers = stores.map((store) => (
     <Marker
       key={store.store_id}

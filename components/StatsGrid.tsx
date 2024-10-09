@@ -9,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import classes from "../styles/StatsGrid.module.css";
 import { useQueries } from "@tanstack/react-query";
+import useOrdersSalesOverTime from "../hooks/useOrdersSalesOverTime";
 
 interface OrdersSalesOverTime {
   month: string;
@@ -44,17 +45,9 @@ function getCurrentYearMonthFirstDay() {
 }
 
 export function StatsGrid() {
-  const [ordersQuery, reviewsQuery, productsQuery] = useQueries({
+  const ordersQuery = useOrdersSalesOverTime();
+  const [reviewsQuery, productsQuery] = useQueries({
     queries: [
-      {
-        queryKey: ["orders", "stats", "sales-over-time"],
-        queryFn: () =>
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/stats/sales-over-time`
-          ).then((res) => res.json()),
-        refetchInterval: 2000,
-        staleTime: 5000,
-      },
       {
         queryKey: ["reviews", "stats", "count-over-time"],
         queryFn: () =>
