@@ -46,7 +46,7 @@ const mockdata = [
     label: "Products",
     icon: IconCup,
     links: [
-      { label: "All Products", link: "/products/all" },
+      { label: "All Products", link: "/products/list" },
       { label: "Categories", link: "/products/categories" },
       { label: "Add New Product", link: "/products/new" },
       { label: "Inventory Management", link: "/products/inventory" },
@@ -65,7 +65,7 @@ const mockdata = [
     label: "Staff",
     icon: IconUsers,
     links: [
-      { label: "All Staff", link: "/staff/all" },
+      { label: "All Staff", link: "/staff/list" },
       { label: "Roles & Permissions", link: "/staff/roles" },
     ],
   },
@@ -73,7 +73,7 @@ const mockdata = [
     label: "Stores",
     icon: IconBuildingStore,
     links: [
-      { label: "All Locations", link: "/stores/all" },
+      { label: "All Locations", link: "/stores/list" },
       { label: "Add New Store", link: "/stores/new" },
       { label: "Store Settings", link: "/stores/settings" },
     ],
