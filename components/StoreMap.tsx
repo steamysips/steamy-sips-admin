@@ -24,8 +24,8 @@ export default function StoreMap({ stores }: { readonly stores: Store[] }) {
   return (
     <MapContainer
       style={{ height: "500px" }}
-      center={[-20.3484, 57.5522]}
-      zoom={13}
+      center={[-20.2981, 57.5725]}
+      zoom={10}
       scrollWheelZoom={true}
     >
       <TileLayer
