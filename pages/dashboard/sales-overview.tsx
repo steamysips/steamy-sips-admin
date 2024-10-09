@@ -1,42 +1,62 @@
 import { StatsGrid } from "../../components/StatsGrid";
-import { Card, Group, Stack, Text } from "@mantine/core";
+import { Card, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
 import { AreaChart, BarChart } from "@mantine/charts";
 import { Comment } from "../../components/Comment";
+import { useQueries } from "@tanstack/react-query";
+import useOrdersSalesOverTime from "../../hooks/useOrdersSalesOverTime";
 
-export const data = [
-  {
-    date: "Mar 22",
-    Apples: 2890,
-    Oranges: 2338,
-    Tomatoes: 2452,
-  },
-  {
-    date: "Mar 23",
-    Apples: 2756,
-    Oranges: 2103,
-    Tomatoes: 2402,
-  },
-  {
-    date: "Mar 24",
-    Apples: 3322,
-    Oranges: 986,
-    Tomatoes: 1821,
-  },
-  {
-    date: "Mar 25",
-    Apples: 3470,
-    Oranges: 2108,
-    Tomatoes: 2809,
-  },
-  {
-    date: "Mar 26",
-    Apples: 3129,
-    Oranges: 1726,
-    Tomatoes: 2290,
-  },
-];
+interface Review {
+  review_id: number;
+  rating: 1 | 2 | 3 | 4 | 5;
+  created_date: string;
+  text: string;
+  client_id: number;
+  product_id: number;
+}
 
 export default function SalesOverviewPage() {
+  const ordersQuery = useOrdersSalesOverTime();
+
+  const [salesCategoryQuery, reviewsQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["products", "stats", "sales-per-category"],
+        queryFn: () =>
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/stats/sales-per-category`
+          ).then((res) => res.json()),
+        refetchInterval: 2000,
+        staleTime: 5000,
+      },
+      {
+        queryKey: ["review", "latest"],
+        queryFn: () =>
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/reviews?limit=3&order_by=created_date`
+          ).then((res) => res.json()),
+        refetchInterval: 2000,
+        staleTime: 5000,
+      },
+    ],
+  });
+
+  if (
+    ordersQuery.isLoading ||
+    salesCategoryQuery.isLoading ||
+    reviewsQuery.isLoading
+  ) {
+    return <LoadingOverlay visible={true} />;
+  }
+
+  const comments = reviewsQuery.data.map((e: Review) => (
+    <Comment
+      key={e.review_id}
+      author={"User " + e.client_id}
+      comment={e.text}
+      date={e.created_date}
+    />
+  ));
+
   return (
     <Stack gap="md">
       <StatsGrid></StatsGrid>
@@ -44,13 +64,9 @@ export default function SalesOverviewPage() {
         <Card>
           <AreaChart
             h={300}
-            data={data}
-            dataKey="date"
-            series={[
-              { name: "Apples", color: "indigo.6" },
-              { name: "Oranges", color: "blue.6" },
-              { name: "Tomatoes", color: "teal.6" },
-            ]}
+            data={ordersQuery.data}
+            dataKey="month"
+            series={[{ name: "totalOrders", color: "indigo.6" }]}
             curveType="linear"
           />
         </Card>
@@ -58,22 +74,18 @@ export default function SalesOverviewPage() {
           <Text size="md" fw={500}>
             Latest Reviews
           </Text>
-          <Comment></Comment>
-          <Comment></Comment>
-          <Comment></Comment>
+          {comments}
         </Stack>
       </Group>
+      <Text size="md" fw={500}>
+        Sales per category{" "}
+      </Text>
       <BarChart
         mt={30}
-        orientation="vertical"
         h={200}
-        data={[
-          { category: "Cappuccino", Sales: 100 },
-          { category: "Latte", Sales: 20 },
-          { category: "Cofi", Sales: 35 },
-        ]}
+        data={salesCategoryQuery.data}
         dataKey="category"
-        series={[{ name: "Sales" }]}
+        series={[{ name: "unitsSold" }]}
       />
     </Stack>
   );

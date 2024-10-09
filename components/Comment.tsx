@@ -1,6 +1,11 @@
 import { Text, Avatar, Group, Paper } from "@mantine/core";
 
-export function Comment() {
+interface Comment {
+  readonly author: string;
+  readonly comment: string;
+  readonly date: string;
+}
+export function Comment({ author, comment, date }: Comment) {
   return (
     <Paper withBorder radius="md" p="md">
       <Group>
@@ -10,17 +15,14 @@ export function Comment() {
           radius="xl"
         />
         <div>
-          <Text size="sm">Jacob Warnhalter</Text>
+          <Text size="sm">{author}</Text>
           <Text size="xs" c="dimmed">
-            10 minutes ago
+            {date}
           </Text>
         </div>
       </Group>
       <Text pl={54} pt="sm" size="sm" truncate="end">
-        This Pokémon likes to lick its palms that are sweetened by being soaked
-        in honey. Teddiursa concocts its own honey by blending fruits and pollen
-        collected by Beedrill. Blastoise has water spouts that protrude from its
-        shell. The water spouts are very accurate.
+        {comment}
       </Text>
     </Paper>
   );
